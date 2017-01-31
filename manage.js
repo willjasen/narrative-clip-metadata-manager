@@ -19,10 +19,6 @@ fileExtensions.forEach(function(extension,index,array) {
 
   zipArchive.pipe(output);
 
-  //zipArchive.bulk([
-  //  { src: [ '**/*' + extension ], cwd: srcDirectory, expand: true }
-  //]);
-
   zipArchive.glob(srcDirectory + '/**/*' + extension);
 
   zipArchive.finalize(function(err, bytes) {
