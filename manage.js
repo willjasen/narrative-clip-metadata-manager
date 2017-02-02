@@ -4,11 +4,12 @@ var archiver = require('archiver');
 var srcDirectory = '/Users/willjasen/Pictures/Narrative Clip';
 var dstFilename = '/Users/willjasen/Pictures/metadata';
 var fileExtensions = ['.json','.snap.bin']
+var timestamp = Date.now();
 
 fileExtensions.forEach(function(extension,index,array) {
   console.time(extension);
   var zipArchive = archiver('zip');
-  var outputPath = dstFilename + extension + '.zip';
+  var outputPath = dstFilename + '-' + timestamp + extension + '.zip';
   var output = fs.createWriteStream(outputPath);
 
   output.on('close', function() {
@@ -18,8 +19,8 @@ fileExtensions.forEach(function(extension,index,array) {
   });
 
   zipArchive.pipe(output);
-
-  zipArchive.glob(srcDirectory + '/**/*' + extension);
+  
+  zipArchive.glob(srcDirectory + '/**/*' + extension); 
 
   zipArchive.finalize(function(err, bytes) {
 
