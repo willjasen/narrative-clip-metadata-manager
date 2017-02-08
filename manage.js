@@ -16,7 +16,21 @@ fileExtensions.forEach(function(extension,index,array) {
   output.on('close', function() {
     console.log('Done with the zip:', outputPath);
     console.log(zipArchive.pointer() + ' total bytes');
-    console.timeEnd(extension);
+    console.timeEnd(extension);    
+
+  });
+
+  zipArchive.pipe(output);
+  
+  zipArchive.glob(srcDirectory + '/**/*' + extension); 
+
+  zipArchive.finalize(function(err, bytes) {
+
+    if(err) {
+      throw err;
+    }
+
+    console.log('Done:', base, bytes);
 
     var glob = require('glob');
 
@@ -38,21 +52,7 @@ fileExtensions.forEach(function(extension,index,array) {
            });
          });
       });
-    });    
-
-  });
-
-  zipArchive.pipe(output);
-  
-  zipArchive.glob(srcDirectory + '/**/*' + extension); 
-
-  zipArchive.finalize(function(err, bytes) {
-
-    if(err) {
-      throw err;
-    }
-
-    console.log('Done:', base, bytes);
+    });
 
   });
 });
